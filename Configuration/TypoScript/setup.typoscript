@@ -1,0 +1,7 @@
+plugin.tx_aichemist {
+    view {
+        templateRootPaths.0 = EXT:aichemist/Resources/Private/Templates/
+        partialRootPaths.0 = EXT:aichemist/Resources/Private/Partials/
+        layoutRootPaths.0 = EXT:aichemist/Resources/Private/Layouts/
+    }
+}

@@ -1,0 +1,2 @@
+# cat=basic/enable; type=string; label=DeepL API Key
+apiKey =

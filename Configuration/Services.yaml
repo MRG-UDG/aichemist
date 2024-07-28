@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  MRG\Aichemist\:
+    resource: '../Classes/*'
+
+  MRG\Aichemist\Controller\TranslationController:
+    public: true
+
+  MRG\Aichemist\Service\DeepLService:
+    public: true
