@@ -11,3 +11,5 @@ $translateButton = [
 ];
 $GLOBALS['TCA']['tt_content']['columns']['bodytext']['config']['fieldControl']['translateButton'] = $translateButton;
 $GLOBALS['TCA']['tt_content']['columns']['header']['config']['fieldControl']['translateButton'] = $translateButton;
+$GLOBALS['TCA']['tt_content']['columns']['subheader']['config']['fieldControl']['translateButton'] = $translateButton;
+$GLOBALS['TCA']['tt_content']['columns']['table_caption']['config']['fieldControl']['translateButton'] = $translateButton;
