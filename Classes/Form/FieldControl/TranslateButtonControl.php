@@ -2,7 +2,6 @@
 namespace MRG\Aichemist\Form\FieldControl;
 
 use TYPO3\CMS\Backend\Form\AbstractNode;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -11,7 +10,23 @@ class TranslateButtonControl extends AbstractNode
 {
     public function render()
     {
-        $pageUid = $this->data['databaseRow']['pid'];
+        if (isset($this->data['command']) && $this->data['command'] === 'new') {
+            // neue Seiten können noch nicht übersetzt werden, weil sonst Daten für die API fehlen.
+            return [];
+        }
+        $tableName = $this->data['tableName'];
+        switch ($tableName) {
+            case 'pages':
+                $sysLanguageUid = $this->data['databaseRow']['sys_language_uid'];
+                if ($sysLanguageUid > 0) {
+                    $pageUid = $this->data['databaseRow']['l10n_source'];
+                } else {
+                    $pageUid = $this->data['databaseRow']['uid'];
+                }
+                break;
+            default:
+                $pageUid = $this->data['databaseRow']['pid'];
+        }
         if ($pageUid < 0) {
             // neuer Inhalt kann noch nicht übersetzt werden, weil sonst Daten für die API fehlen.
             return [];

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" date="2024-07-25T12:00:00Z" product-name="aichemist">
+        <header/>
+        <body>
+            <trans-unit id="apiKey.label">
+                <source>DeepL API Key: Please enter your DeepL API key. Further information can be found at https://www.deepl.com/pro-api</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

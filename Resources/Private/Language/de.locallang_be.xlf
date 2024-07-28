@@ -3,8 +3,8 @@
     <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2024-07-25T12:00:00Z" product-name="aichemist">
         <header/>
         <body>
-            <trans-unit id="translate_button.title">
-                <target>Text übersetzen</target>
+            <trans-unit id="apiKey.label">
+                <target>DeepL API Key: Bitte geben Sie Ihren DeepL API-Schlüssel ein. Weitere Informationen finden Sie unter https://www.deepl.com/pro-api</target>
             </trans-unit>
         </body>
     </file>

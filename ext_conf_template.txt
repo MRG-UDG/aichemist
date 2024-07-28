@@ -1,2 +1,2 @@
-# cat=basic/enable; type=string; label=DeepL API Key
+# cat=basic/enable; type=string; label=LLL:EXT:aichemist/Resources/Private/Language/locallang_be.xlf:apiKey.label
 apiKey =
