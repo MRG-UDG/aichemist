@@ -5,46 +5,45 @@ define(['jquery', 'TYPO3/CMS/Backend/AjaxDataHandler', 'TYPO3/CMS/Backend/FormEn
         initialize: function() {
             $(document).on('click', '.t3js-translate-button', function(e) {
                 e.preventDefault();
-                var fieldId = $(this).data('field-id');
-                Translator.translate(fieldId, 'en-US'); // Ändern Sie 'DE' zur gewünschten Zielsprache
+                var fieldName = $(this).data('field-name');
+                var fieldId = Translator.getFieldId(fieldName);
+                Translator.translate(fieldId, fieldName, 'en-US'); // Ändern Sie 'DE' zur gewünschten Zielsprache
             });
         },
-        formatFieldId: function(fieldId) {
-            // Teile die ID in ihre Komponenten
-            var parts = fieldId.split('_');
-            if (parts.length < 4) return fieldId; // Wenn das Format nicht passt, gib die originale ID zurück
-
-            var table = parts.slice(1, -2).join('_'); // Tabelle kann '_' enthalten
-            var uid = parts[parts.length - 2];
-            var field = parts[parts.length - 1];
-
-            return 'data_' + table + '__' + uid + '__' + field + '_';
+        getFieldId: function(fieldName) {
+            // für Standard Felder
+            var inputEl = $('[data-formengine-input-name="' + fieldName + '"]');
+            if (inputEl.length === 0) {
+                // für RTE Felder
+                inputEl = $('[name="' + fieldName + '"]');
+            }
+            return inputEl.attr('id');
         },
-        getEditorContent: function(fieldId) {
-            var formattedFieldId = this.formatFieldId(fieldId);
+        getEditorContent: function(fieldId, fieldName) {
             var content = '';
-            if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances[formattedFieldId]) {
-                content = CKEDITOR.instances[formattedFieldId].getData();
-            } else if (typeof tinyMCE !== 'undefined' && tinyMCE.get(formattedFieldId)) {
-                content = tinyMCE.get(formattedFieldId).getContent();
+            if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances[fieldId]) {
+                content = CKEDITOR.instances[fieldId].getData();
+            } else if (typeof tinyMCE !== 'undefined' && tinyMCE.get(fieldId)) {
+                content = tinyMCE.get(fieldId).getContent();
             } else {
-                content = $('#' + formattedFieldId).val();
+                content = $('#' + fieldId).val();
             }
             return content;
         },
-        setEditorContent: function(fieldId, content) {
-            var formattedFieldId = this.formatFieldId(fieldId);
-            if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances[formattedFieldId]) {
-                CKEDITOR.instances[formattedFieldId].setData(content);
-            } else if (typeof tinyMCE !== 'undefined' && tinyMCE.get(formattedFieldId)) {
-                tinyMCE.get(formattedFieldId).setContent(content);
+        setEditorContent: function(fieldId, fieldName, content) {
+            if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances[fieldId]) {
+                CKEDITOR.instances[fieldId].setData(content);
+            } else if (typeof tinyMCE !== 'undefined' && tinyMCE.get(fieldId)) {
+                tinyMCE.get(fieldId).setContent(content);
             } else {
-                $('#' + formattedFieldId).val(content);
+                // im sichtbaren und versteckten Feld anpassen
+                $('#' + fieldId).val(content);
+                $('[name="' + fieldName + '"]').val(content);
             }
-            FormEngine.Validation.markFieldAsChanged($('#' + formattedFieldId));
+            FormEngine.Validation.markFieldAsChanged($('#' + fieldId));
         },
-        translate: function(fieldId, targetLang) {
-            var text = this.getEditorContent(fieldId);
+        translate: function(fieldId, fieldName, targetLang) {
+            var text = this.getEditorContent(fieldId, fieldName);
 
             if (!text) {
                 return;
@@ -61,7 +60,7 @@ define(['jquery', 'TYPO3/CMS/Backend/AjaxDataHandler', 'TYPO3/CMS/Backend/FormEn
                     if (response.error) {
                         console.error('Translation error:', response.error);
                     } else {
-                        Translator.setEditorContent(fieldId, response.translatedText);
+                        Translator.setEditorContent(fieldId, fieldName, response.translatedText);
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

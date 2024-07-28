@@ -10,7 +10,7 @@ class TranslateButtonControl extends AbstractNode
     public function render()
     {
         $parameterArray = $this->data['parameterArray'];
-        $fieldId = $parameterArray['itemFormElID'];
+        $fieldName = $parameterArray['itemFormElName'];
 
         // Überprüfen Sie, ob fieldControlOptions gesetzt ist, und setzen Sie einen Fallback
         $options = $parameterArray['fieldControlOptions'] ?? ['title' => 'Übersetzen'];
@@ -27,7 +27,7 @@ class TranslateButtonControl extends AbstractNode
             'title' => $title,
             'linkAttributes' => [
                 'class' => 't3js-translate-button',
-                'data-field-id' => $fieldId
+                'data-field-name' => $fieldName
             ],
             'requireJsModules' => [
                 'TYPO3/CMS/Aichemist/Translator'

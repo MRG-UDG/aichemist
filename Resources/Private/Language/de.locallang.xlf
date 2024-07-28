@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2024-07-25T12:00:00Z" product-name="aichemist">
+    <file target-language="de" datatype="plaintext" original="messages" date="2024-07-25T12:00:00Z" product-name="aichemist">
         <header/>
         <body>
             <trans-unit id="translate_button.title">
-                <source>Translate text</source>
+                <target>Text übersetzen</target>
             </trans-unit>
         </body>
     </file>
