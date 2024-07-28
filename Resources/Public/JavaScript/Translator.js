@@ -1,4 +1,4 @@
-define(['jquery', 'TYPO3/CMS/Backend/AjaxDataHandler', 'TYPO3/CMS/Backend/FormEngine'], function($, AjaxDataHandler, FormEngine) {
+define('TYPO3/CMS/Aichemist/Translator', ['jquery', 'TYPO3/CMS/Backend/AjaxDataHandler', 'TYPO3/CMS/Backend/FormEngine'], function($, AjaxDataHandler, FormEngine) {
     'use strict';
 
     var Translator = {
@@ -6,8 +6,10 @@ define(['jquery', 'TYPO3/CMS/Backend/AjaxDataHandler', 'TYPO3/CMS/Backend/FormEn
             $(document).on('click', '.t3js-translate-button', function(e) {
                 e.preventDefault();
                 var fieldName = $(this).data('field-name');
+                var targetLang = $(this).data('targetlang');
                 var fieldId = Translator.getFieldId(fieldName);
-                Translator.translate(fieldId, fieldName, 'en-US'); // Ändern Sie 'DE' zur gewünschten Zielsprache
+
+                Translator.translate(fieldId, fieldName, targetLang);
             });
         },
         getFieldId: function(fieldName) {

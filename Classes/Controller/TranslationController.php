@@ -1,11 +1,10 @@
 <?php
 namespace MRG\Aichemist\Controller;
 
+use MRG\Aichemist\Service\DeepLService;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Log\LogManager;
-use MRG\Aichemist\Service\DeepLService;
 
 class TranslationController
 {
@@ -17,7 +16,6 @@ class TranslationController
         $this->deepLService = $deepLService;
         $this->logger = $logManager->getLogger(__CLASS__);
     }
-
 
     public function translateAction(): ResponseInterface
     {
