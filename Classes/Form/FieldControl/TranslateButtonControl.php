@@ -12,6 +12,10 @@ class TranslateButtonControl extends AbstractNode
     public function render()
     {
         $pageUid = $this->data['databaseRow']['pid'];
+        if ($pageUid < 0) {
+            // neuer Inhalt kann noch nicht übersetzt werden, weil sonst Daten für die API fehlen.
+            return [];
+        }
         $contentLanguageId = $this->data['databaseRow']['sys_language_uid'];
         $parameterArray = $this->data['parameterArray'];
         $fieldName = $parameterArray['itemFormElName'];
