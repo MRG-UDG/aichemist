@@ -24,11 +24,19 @@ class TranslateButtonControl extends AbstractNode
                     $pageUid = $this->data['databaseRow']['uid'];
                 }
                 break;
+            case 'sys_file_metadata':
+                $sysLanguageUid = $this->data['databaseRow']['sys_language_uid'];
+                $pageUid = 1; // Default; TODO: get Site-UID from Language Select
+                break;
             default:
                 $pageUid = $this->data['databaseRow']['pid'];
         }
         if ($pageUid < 0) {
             // neuer Inhalt kann noch nicht übersetzt werden, weil sonst Daten für die API fehlen.
+            return [];
+        }
+        if (!isset($this->data['databaseRow']['sys_language_uid'])) {
+            // Inhalte ohne konfigurierter Übersetzbarkeit können auch nicht übersetzt werden, weil sonst Daten für die API fehlen.
             return [];
         }
         $contentLanguageId = $this->data['databaseRow']['sys_language_uid'];
@@ -49,7 +57,7 @@ class TranslateButtonControl extends AbstractNode
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $site = $siteFinder->getSiteByPageId($pageUid);
         $languages = $site->getLanguages();
-        $targetLang = 'en_US'; // default
+        $targetLang = 'EN-US'; // default
         foreach ($languages as $language) {
             if ($language->getLanguageId() === $contentLanguageId) {
                 // iso-639-1

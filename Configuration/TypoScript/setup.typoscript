@@ -4,4 +4,12 @@ plugin.tx_aichemist {
         partialRootPaths.0 = EXT:aichemist/Resources/Private/Partials/
         layoutRootPaths.0 = EXT:aichemist/Resources/Private/Layouts/
     }
+    settings {
+        translateButtonTables {
+            tt_content = bodytext,header,subheader,table_caption
+            pages = title,nav_title,subtitle,seo_title,description,og_title,og_description,twitter_title,twitter_description,abstract,keywords
+            sys_category = title
+            sys_file_metadata = title,alternative,description
+        }
+    }
 }
