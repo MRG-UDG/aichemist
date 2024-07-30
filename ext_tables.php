@@ -1,8 +1,5 @@
 <?php
-defined('TYPO3_MODE') || die();
+defined('TYPO3') || die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addStaticFile(
-    'aichemist',
-    'Configuration/TypoScript',
-    'AIchemist'
-);
+$pageRenderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Page\PageRenderer::class);
+$pageRenderer->loadJavaScriptModule('@mrg/aichemist/translator.js');

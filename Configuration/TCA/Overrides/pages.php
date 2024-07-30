@@ -1,8 +1,31 @@
 <?php
 
-defined('TYPO3_MODE') or die();
+defined('TYPO3') or die();
 
-// benutzerdefiniertes Feld für den Übersetzungsbutton hinzufügen
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\TypoScript\Parser\TypoScriptParser;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+// Pfad zur TypoScript Setup-Datei Ihrer Extension
+$typoScriptPath = ExtensionManagementUtility::extPath('aichemist') . 'Configuration/TypoScript/setup.typoscript';
+
+// TypoScript-Datei einlesen
+$typoScriptContent = file_get_contents($typoScriptPath);
+
+// TypoScriptParser instanziieren
+$typoScriptParser = GeneralUtility::makeInstance(TypoScriptParser::class);
+$typoScriptParser->parse($typoScriptContent);
+
+// TypoScriptService instanziieren
+$typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+
+// TypoScript-Array in ein flaches Array konvertieren
+$flattenedTypoScript = $typoScriptService->convertTypoScriptArrayToPlainArray($typoScriptParser->setup);
+
+// Auf spezifische Einstellungen zugreifen
+$mySetting = $flattenedTypoScript['plugin']['tx_aichemist']['settings']['translateButtonTables'] ?? null;
+
 $translateButton = [
     'renderType' => 'translateButton',
     'options' => [
@@ -10,30 +33,10 @@ $translateButton = [
     ]
 ];
 
-// TypoScript-Konfiguration lesen
-$configurationManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-    \TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class
-);
-$typoScriptSetup = $configurationManager->getConfiguration(
-    \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-);
-
-$pluginSetup = $typoScriptSetup['plugin.']['tx_aichemist.'] ?? [];
-$typoScriptService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-    \TYPO3\CMS\Core\TypoScript\TypoScriptService::class
-);
-// Felder aus der TypoScript-Konfiguration holen
-$pluginSettings = $typoScriptService->convertTypoScriptArrayToPlainArray($pluginSetup);
-
 // Übersetzungsbutton zu jedem konfigurierten Feld in jeder konfigurierten Tabelle hinzufügen
-// (auch jenseits der Tabelle "pages")
-foreach ($pluginSettings['settings']['translateButtonTables'] as $table => $fields) {
+foreach ($mySetting ?? [] as $table => $fields) {
     if (isset($GLOBALS['TCA'][$table])) {
-        $fields = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(
-            ',',
-            $fields,
-            true
-        );
+        $fields = GeneralUtility::trimExplode(',', $fields, true);
         foreach ($fields as $field) {
             $GLOBALS['TCA'][$table]['columns'][$field]['config']['fieldControl']['translateButton'] = $translateButton;
         }

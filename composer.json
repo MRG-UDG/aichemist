@@ -12,8 +12,8 @@
     }
   ],
   "require": {
-    "typo3/cms-core": "^11.5",
-    "typo3/cms-backend": "^11.5",
+    "typo3/cms-core": "^12.4",
+    "typo3/cms-backend": "^12.4",
     "deeplcom/deepl-php": "^v1.8"
   },
   "autoload": {
