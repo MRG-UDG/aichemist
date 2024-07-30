@@ -8,7 +8,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class TranslateButtonControl extends AbstractNode
 {
-    public function render()
+    public function render(): array
     {
         if (isset($this->data['command']) && $this->data['command'] === 'new') {
             // neue Seiten können noch nicht übersetzt werden, weil sonst Daten für die API fehlen.
@@ -17,19 +17,19 @@ class TranslateButtonControl extends AbstractNode
         $tableName = $this->data['tableName'];
         switch ($tableName) {
             case 'pages':
-                $sysLanguageUid = $this->data['databaseRow']['sys_language_uid'];
+                $sysLanguageUid = $this->data['databaseRow']['sys_language_uid'] ?? 0;
                 if ($sysLanguageUid > 0) {
-                    $pageUid = $this->data['databaseRow']['l10n_source'];
+                    $pageUid = $this->data['databaseRow']['l10n_source'] ?? 0;
                 } else {
-                    $pageUid = $this->data['databaseRow']['uid'];
+                    $pageUid = $this->data['databaseRow']['uid'] ?? 0;
                 }
                 break;
             case 'sys_file_metadata':
-                $sysLanguageUid = $this->data['databaseRow']['sys_language_uid'];
+                $sysLanguageUid = $this->data['databaseRow']['sys_language_uid'] ?? 0;
                 $pageUid = 1; // Default; TODO: get Site-UID from Language Select
                 break;
             default:
-                $pageUid = $this->data['databaseRow']['pid'];
+                $pageUid = $this->data['databaseRow']['pid'] ?? 0;
         }
         if ($pageUid < 0) {
             // neuer Inhalt kann noch nicht übersetzt werden, weil sonst Daten für die API fehlen.
@@ -39,7 +39,7 @@ class TranslateButtonControl extends AbstractNode
             // Inhalte ohne konfigurierter Übersetzbarkeit können auch nicht übersetzt werden, weil sonst Daten für die API fehlen.
             return [];
         }
-        $contentLanguageId = $this->data['databaseRow']['sys_language_uid'];
+        $contentLanguageId = $this->data['databaseRow']['sys_language_uid'] ?? 0;
         $parameterArray = $this->data['parameterArray'];
         $fieldName = $parameterArray['itemFormElName'];
 
@@ -51,7 +51,7 @@ class TranslateButtonControl extends AbstractNode
 
         // Fügen Sie Ihr JavaScript hinzu
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/Aichemist/Translator');
+        $pageRenderer->loadJavaScriptModule('@mrg/aichemist/translator.js');
 
         /** @var SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);

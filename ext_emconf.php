@@ -8,12 +8,11 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => 'marko.roeper-grewe@udg.de',
     'author_company' => 'PIA / UDG',
     'state' => 'stable',
-    'clearCacheOnLoad' => 1,
-    'version' => '1.5.0',
+    'version' => '2.0.0',
     'iconIdentifier' => 'ext-aichemist-icon',
     'constraints' => [
         'depends' => [
-            'typo3' => '11.5.0-11.5.99',
+            'typo3' => '12.4.0-12.4.99',
             'deepl-php' => '',
         ],
         'conflicts' => [],

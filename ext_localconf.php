@@ -1,33 +1,41 @@
 <?php
-defined('TYPO3_MODE') || die();
+defined('TYPO3') || die();
 
-$iconRegistry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-    \TYPO3\CMS\Core\Imaging\IconRegistry::class
-);
-$iconRegistry->registerIcon(
-    'ext-aichemist-icon',
-    \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
-    ['source' => 'EXT:aichemist/Resources/Public/Icons/Extension.svg']
-);
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1628770526] = [
-    'nodeName' => 'translateButton',
-    'priority' => 40,
-    'class' => \MRG\Aichemist\Form\FieldControl\TranslateButtonControl::class
-];
+call_user_func(function ($extKey) {
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Aichemist',
-    'TranslationPlugin',
-    [
-        \MRG\Aichemist\Controller\TranslationController::class => 'translateAction'
-    ],
-    [
-        \MRG\Aichemist\Controller\TranslationController::class => 'translateAction'
-    ]
-);
+    // Register the icon
+    $iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
+    $iconRegistry->registerIcon(
+        'ext-aichemist-icon',
+        SvgIconProvider::class,
+        ['source' => 'EXT:aichemist/Resources/Public/Icons/Extension.svg']
+    );
 
-// Registrieren Sie die AJAX-Route
-$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['ajaxRoutes']['translate_text'] = [
-    'target' => \MRG\Aichemist\Controller\TranslationController::class . '::translateAction'
-];
+    $GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1628770526] = [
+        'nodeName' => 'translateButton',
+        'priority' => 40,
+        'class' => \MRG\Aichemist\Form\FieldControl\TranslateButtonControl::class
+    ];
+
+    ExtensionUtility::configurePlugin(
+        'Aichemist',
+        'TranslationPlugin',
+        [
+            \MRG\Aichemist\Controller\TranslationController::class => 'translateAction'
+        ],
+        [
+            \MRG\Aichemist\Controller\TranslationController::class => 'translateAction'
+        ]
+    );
+
+    // Registrieren Sie die AJAX-Route
+    $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['ajaxRoutes']['translate_text'] = [
+        'target' => \MRG\Aichemist\Controller\TranslationController::class . '::translateAction'
+    ];
+
+}, 'aichemist');
