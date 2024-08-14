@@ -51,7 +51,7 @@ class TranslateButtonControl extends AbstractNode
 
         // Fügen Sie Ihr JavaScript hinzu
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadJavaScriptModule('@mrg/aichemist/translator.js');
+        $pageRenderer->loadJavaScriptModule('@mrg/aichemist/Translator.js');
 
         /** @var SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
