@@ -46,9 +46,8 @@ class TranslateButtonControl extends AbstractNode
         $site = $siteFinder->getSiteByPageId($pageUid);
         $languages = $site->getLanguages();
         $targetLang = 'EN-US';
-
         foreach ($languages as $language) {
-            if ($language->getLanguageId() === $contentLanguageId) {
+            if ((int)$language->getLanguageId() === (int)$contentLanguageId) {
                 $targetIso = $language->getLocale()->getLanguageCode();
                 $targetLang = ($targetIso === 'en' || $targetIso === 'pt')
                     ? $language->getLocale()
