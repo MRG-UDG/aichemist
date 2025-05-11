@@ -2,7 +2,7 @@ import $ from 'jquery';
 import AjaxDataHandler from '@typo3/backend/ajax-data-handler.js';
 import FormEngine from '@typo3/backend/form-engine.js';
 
-class Translator {
+class Ttranslator {
     constructor() {
         this.initialize();
     }
@@ -62,4 +62,4 @@ class Translator {
     }
 }
 
-export default new Translator();
+export default new Ttranslator();
