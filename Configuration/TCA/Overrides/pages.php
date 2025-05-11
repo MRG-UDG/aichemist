@@ -61,11 +61,6 @@ foreach ($mySetting ?? [] as $table => $fields) {
         $fields = GeneralUtility::trimExplode(',', $fields, true);
         foreach ($fields as $field) {
             $GLOBALS['TCA'][$table]['columns'][$field]['config']['fieldControl']['translateButton'] = $translateButton;
-
-            // ✅ Anpassung für TYPO3 v13:
-            $GLOBALS['TCA'][$table]['columns'][$field]['config']['fieldWizard']['translate'] = [
-                'renderType' => 'translateWizard'
-            ];
         }
     }
 }
