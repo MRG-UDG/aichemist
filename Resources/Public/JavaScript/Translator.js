@@ -13,7 +13,6 @@ class Translator {
             const fieldName = $(e.currentTarget).data('field-name');
             const targetLang = $(e.currentTarget).data('targetlang');
             const fieldId = this.getFieldId(fieldName);
-
             this.translate(fieldId, fieldName, targetLang);
         });
     }
@@ -42,7 +41,6 @@ class Translator {
         if (!text) {
             return;
         }
-
         $.ajax({
             url: TYPO3.settings.ajaxUrls['translate_text'],
             method: 'POST',

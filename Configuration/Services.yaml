@@ -10,5 +10,8 @@ services:
   MRG\Aichemist\Controller\TranslationController:
     public: true
 
+  MRG\Aichemist\Form\FieldControl\TranslateButtonControl:
+    public: true
+
   MRG\Aichemist\Service\DeepLService:
     public: true

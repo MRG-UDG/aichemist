@@ -30,7 +30,8 @@ call_user_func(function ($extKey) {
         ],
         [
             \MRG\Aichemist\Controller\TranslationController::class => 'translateAction'
-        ]
+        ],
+        \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
     );
 
     // Registrieren Sie die AJAX-Route

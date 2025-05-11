@@ -11,69 +11,53 @@ class TranslateButtonControl extends AbstractNode
     public function render(): array
     {
         if (isset($this->data['command']) && $this->data['command'] === 'new') {
-            // neue Seiten können noch nicht übersetzt werden, weil sonst Daten für die API fehlen.
-            return [];
+            return []; // Neue Seiten können noch nicht übersetzt werden
         }
+
         $tableName = $this->data['tableName'];
         switch ($tableName) {
             case 'pages':
                 $sysLanguageUid = $this->data['databaseRow']['sys_language_uid'] ?? 0;
-                if ($sysLanguageUid > 0) {
-                    $pageUid = $this->data['databaseRow']['l10n_source'] ?? 0;
-                } else {
-                    $pageUid = $this->data['databaseRow']['uid'] ?? 0;
-                }
+                $pageUid = ($sysLanguageUid > 0)
+                    ? ($this->data['databaseRow']['l10n_source'] ?? 0)
+                    : ($this->data['databaseRow']['uid'] ?? 0);
                 break;
             case 'sys_file_metadata':
                 $sysLanguageUid = $this->data['databaseRow']['sys_language_uid'] ?? 0;
-                $pageUid = 1; // Default; TODO: get Site-UID from Language Select
+                $pageUid = 1; // Default-Wert, TODO: Site-UID aus Sprache ermitteln
                 break;
             default:
                 $pageUid = $this->data['databaseRow']['pid'] ?? 0;
         }
-        if ($pageUid < 0) {
-            // neuer Inhalt kann noch nicht übersetzt werden, weil sonst Daten für die API fehlen.
-            return [];
+
+        if ($pageUid < 0 || !isset($this->data['databaseRow']['sys_language_uid'])) {
+            return []; // Inhalte ohne Übersetzungsfähigkeit können nicht übersetzt werden
         }
-        if (!isset($this->data['databaseRow']['sys_language_uid'])) {
-            // Inhalte ohne konfigurierter Übersetzbarkeit können auch nicht übersetzt werden, weil sonst Daten für die API fehlen.
-            return [];
-        }
+
         $contentLanguageId = $this->data['databaseRow']['sys_language_uid'] ?? 0;
         $parameterArray = $this->data['parameterArray'];
         $fieldName = $parameterArray['itemFormElName'];
 
-        // Überprüfen Sie, ob fieldControlOptions gesetzt ist, und setzen Sie einen Fallback
         $options = $parameterArray['fieldControlOptions'] ?? ['title' => 'Übersetzen'];
-
-        // Fügen Sie den Titel hinzu
         $title = $options['title'] ?? 'Übersetzen';
-
-        // Fügen Sie Ihr JavaScript hinzu
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadJavaScriptModule('@mrg/aichemist/translator.js');
 
         /** @var SiteFinder $siteFinder */
         $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
         $site = $siteFinder->getSiteByPageId($pageUid);
         $languages = $site->getLanguages();
-        $targetLang = 'EN-US'; // default
+        $targetLang = 'EN-US';
+
         foreach ($languages as $language) {
             if ($language->getLanguageId() === $contentLanguageId) {
-                // iso-639-1
-                $targetIso = $language->getTwoLetterIsoCode();
-                if ($targetIso == 'en' || $targetIso == 'pt') {
-                    // Ausnahmen bei gewissen Sprachen, wo die "locale" Einstellung wichtig ist.
-                    $targetLang = $language->getLocale();
-                } else {
-                    $targetLang = $targetIso;
-                }
+                $targetIso = $language->getLocale()->getLanguageCode();
+                $targetLang = ($targetIso === 'en' || $targetIso === 'pt')
+                    ? $language->getLocale()
+                    : $targetIso;
                 break;
             }
         }
-        $targetLang = str_replace('_', '-', strtoupper($targetLang));
 
-        // Optional: Locale in den Titel einfügen
+        $targetLang = str_replace('_', '-', strtoupper($targetLang));
         $title .= ' (' . $targetLang . ')';
 
         return [
