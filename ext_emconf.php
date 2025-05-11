@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'typo3' => '13.4.0-13.4.99',
-            'deepl-php' => '',
+            'deepl-php' => 'v1.8',
         ],
         'conflicts' => [],
         'suggests' => [],
