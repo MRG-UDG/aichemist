@@ -6,13 +6,13 @@ $EM_CONF[$_EXTKEY] = [
     'category' => 'be',
     'author' => 'Marko Röper-Grewe',
     'author_email' => 'marko.roeper-grewe@udg.de',
-    'author_company' => 'PIA / UDG',
+    'author_company' => 'MSQ / UDG',
     'state' => 'stable',
-    'version' => '2.0.0',
+    'version' => '13.4.0',
     'iconIdentifier' => 'ext-aichemist-icon',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.0-12.4.99',
+            'typo3' => '13.4.0-13.4.99',
             'deepl-php' => '',
         ],
         'conflicts' => [],
